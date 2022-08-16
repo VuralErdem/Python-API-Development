@@ -1,30 +1,18 @@
-
-from multiprocessing import connection
-from typing import Optional
 from fastapi.params import Body
-from fastapi import FastAPI, status, HTTPException, Response
+from fastapi import FastAPI, status, HTTPException, Response, Depends 
 from pydantic import BaseModel
 from random import randrange
 import psycopg2
 from psycopg2.extras import RealDictCursor
 import time
+from sqlalchemy.orm import Session
 from . import models
-from .database import engine, SessionLocal
+from .database import engine, get_db
 
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
-
-
-# Dependency
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-        
-        
+  
 
 class Post(BaseModel):
     title: str
@@ -53,14 +41,27 @@ def find_post(id):
         if p["id"] == id:
             return p
         
+        
+        
 def find_index(id):
     for i, p in enumerate(my_posts):
         if p["id"] == id:
             return i
 
+
+
 @app.get("/")
 def root():
     return {"message": "welcome to my api????"}
+
+
+
+@app.get("/sqlalchemy")
+def test_posts(db: Session = Depends(get_db)):
+    
+    post = db.query(models.Post).all()
+    return {"data": post}
+    
 
 
 

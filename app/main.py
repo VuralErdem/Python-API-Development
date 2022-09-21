@@ -1,5 +1,4 @@
 
-
 from fastapi.params import Body
 from fastapi import FastAPI, status, HTTPException, Response, Depends 
 import psycopg2
@@ -9,6 +8,7 @@ from sqlalchemy.orm import Session
 from . import models, schemas, utils
 from .database import engine, get_db
 from .routers import post, user, auth
+
 
 
 models.Base.metadata.create_all(bind=engine)

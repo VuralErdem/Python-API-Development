@@ -1,4 +1,3 @@
-from distutils.command.config import config
 from fastapi import FastAPI
 from . import models
 from .database import engine

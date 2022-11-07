@@ -5,7 +5,7 @@ Revises: 1175be247a2f
 Create Date: 2022-10-24 10:19:29.677205
 
 """
-from xmlrpc.client import Boolean
+
 from alembic import op
 import sqlalchemy as sa
 
